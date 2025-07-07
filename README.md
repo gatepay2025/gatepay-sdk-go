@@ -15,12 +15,12 @@ GatePay API官方GO语言客户端代码库。
 
 1.下载地址:
 
-https://github.com/gatepay2025/gatepay-sdk-go- 
+https://github.com/gatepay2025/gatepay-sdk-go 
 
 2.您也可以使用以下命令获取安装包，代码会被下载到GOPATH环境变量中第一个路径src目录中。
 
 ```
-go get https://github.com/gatepay2025/gatepay-sdk-go-
+go get https://github.com/gatepay2025/gatepay-sdk-go
 ```
 
 
