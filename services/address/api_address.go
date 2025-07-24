@@ -2,9 +2,9 @@ package address
 
 import (
 	"context"
-	"github.com/gate/gatepay-sdk-go/core"
-	"github.com/gate/gatepay-sdk-go/services"
-	"github.com/gate/gatepay-sdk-go/services/common"
+	"github.com/gatepay2025/gatepay-sdk-go/core"
+	"github.com/gatepay2025/gatepay-sdk-go/services"
+	"github.com/gatepay2025/gatepay-sdk-go/services/common"
 	nethttp "net/http"
 	neturl "net/url"
 )

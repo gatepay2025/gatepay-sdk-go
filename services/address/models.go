@@ -1,7 +1,7 @@
 package address
 
 import (
-	"github.com/gate/gatepay-sdk-go/services/common"
+	"github.com/gatepay2025/gatepay-sdk-go/services/common"
 	"github.com/shopspring/decimal"
 )
 

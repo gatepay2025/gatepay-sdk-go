@@ -1,4 +1,4 @@
-module github.com/gate/gatepay-sdk-go
+module github.com/gatepay2025/gatepay-sdk-go
 
 go 1.21.6
 

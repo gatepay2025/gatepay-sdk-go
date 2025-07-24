@@ -44,9 +44,9 @@ go get https://github.com/gatepay2025/gatepay-sdk-go
    ```go
    import (
    	"context"
-   	"github.com/gate/gatepay-sdk-go/core"
-   	"github.com/gate/gatepay-sdk-go/core/stringutillib"
-   	"github.com/gate/gatepay-sdk-go/services/common"
+   	"github.com/gatepay2025/gatepay-sdk-go/core"
+   	"github.com/gatepay2025/gatepay-sdk-go/core/stringutillib"
+   	"github.com/gatepay2025/gatepay-sdk-go/services/common"
    	"github.com/shopspring/decimal"
    	"log"
    )

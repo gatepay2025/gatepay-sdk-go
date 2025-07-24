@@ -1,6 +1,6 @@
 package payment
 
-import "github.com/gate/gatepay-sdk-go/services/common"
+import "github.com/gatepay2025/gatepay-sdk-go/services/common"
 
 type OperateOrderRequest struct {
 	common.BaseRequest

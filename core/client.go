@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/gate/gatepay-sdk-go/core/signature"
+	"github.com/gatepay2025/gatepay-sdk-go/core/signature"
 	"io"
 	"net/http"
 	"net/url"
