@@ -42,37 +42,39 @@ go get https://github.com/gatepay2025/gatepay-sdk-go
    大致代码如下：
 
    ```go
+   package main
+   
    import (
    	"context"
    	"github.com/gatepay2025/gatepay-sdk-go/core"
    	"github.com/gatepay2025/gatepay-sdk-go/core/stringutillib"
-   	"github.com/gatepay2025/gatepay-sdk-go/services/common"
-   	"github.com/shopspring/decimal"
+   	"github.com/gatepay2025/gatepay-sdk-go/services/address"
    	"log"
    )
    
    func main() {
-   		cfg := core.NewConfig()
-       //设置商户注册获取的秘钥
-   		credentials := core.NewCredentials("Mz6M_q4AkDnZCSoTDo03A6OtWzN5ut8_Uix3jyVjxAU=")
-   		client, err := core.NewClient(cfg, credentials)
-   		if err != nil {
-   			return
-   		}
+   	cfg := core.NewConfig()
+   	//设置商户注册获取的秘钥
+   	credentials := core.NewCredentials("Mz6M_q4AkDnZCSoTDo03A6OtWzN5ut8_Uix3jyVjxAU=")
+   	client, err := core.NewClient(cfg, credentials)
+   	if err != nil {
+   		return
+   	}
    
-       ctx := context.Background()
-       service := &AddressApiService{Client: client}
-       req := QueryAddressOrderRequest{MerchantTradeNo: "j4058308409230424822343166", PrepayID: "370308976316735488"}
-       req.AddHeader("X-GatePay-Certificate-ClientId", "mZ96D37oKk-HrWJc")
+   	ctx := context.Background()
+   	service := &address.AddressApiService{Client: client}
+   	req := address.QueryAddressOrderRequest{MerchantTradeNo: "j4058308409230424822343166", PrepayID: "370308976316735488"}
+   	req.AddHeader("X-GatePay-Certificate-ClientId", "mZ96D37oKk-HrWJc")
    
-       resp, result, err := service.QueryAddressOrder(ctx, req)
-       if err != nil {
-         log.Printf("call QueryAddressOrder err:%s", err.Error())
-       } else {
-         log.Printf("status=%d resp=%v", result.Response.StatusCode, stringutillib.ObjToJsonStr(resp))
-       }
+   	resp, result, err := service.QueryAddressOrder(ctx, req)
+   	if err != nil {
+   		log.Printf("call QueryAddressOrder err:%s", err.Error())
+   	} else {
+   		log.Printf("status=%d resp=%v", result.Response.StatusCode, stringutillib.ObjToJsonStr(resp))
+   	}
    }
+   
    ```
-
+   
    
 
