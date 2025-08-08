@@ -61,7 +61,7 @@ func TestCreateAddressOrder(t *testing.T) {
 		},
 		Chain:          "ETH",
 		FullCurrType:   "USDT_ETH",
-		MerchantUserId: 6790011,
+		MerchantUserId: 0,
 	}
 
 	req.AddHeader("X-GatePay-Certificate-ClientId", "client-id")

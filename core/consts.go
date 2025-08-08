@@ -2,8 +2,8 @@ package core
 
 import "regexp"
 
-// var DefaultEndpoint = "https://openplatform.gateapi.io"
-var DefaultEndpoint = "http://dev.halftrust.xyz/gfpay"
+// 生产环境地址
+var DefaultEndpoint = "https://openplatform.gateapi.io"
 
 const (
 	SchemeHTTP  = "http"
