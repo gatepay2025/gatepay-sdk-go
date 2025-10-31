@@ -19,26 +19,26 @@ type APIError struct {
 
 func (e *APIError) Error() string {
 	var buf bytes.Buffer
-	_, _ = fmt.Fprintf(&buf, "error http response:[StatusCode: %d Code: \"%s\"", e.StatusCode, e.Code)
+	fmt.Fprintf(&buf, "error http response:[StatusCode: %d Code: \"%s\"", e.StatusCode, e.Code)
 	if e.Message != "" {
-		_, _ = fmt.Fprintf(&buf, "\nMessage: %s", e.Message)
+		fmt.Fprintf(&buf, "\nMessage: %s", e.Message)
 	}
 	if e.ErrorMessage != nil {
 		var detailBuf bytes.Buffer
 		enc := json.NewEncoder(&detailBuf)
 		enc.SetIndent("", "  ")
 		if err := enc.Encode(e.ErrorMessage); err == nil {
-			_, _ = fmt.Fprint(&buf, "\nDetail:")
-			_, _ = fmt.Fprintf(&buf, "\n%s", strings.TrimSpace(detailBuf.String()))
+			fmt.Fprint(&buf, "\nDetail:")
+			fmt.Fprintf(&buf, "\n%s", strings.TrimSpace(detailBuf.String()))
 		}
 	}
 	if len(e.Header) > 0 {
-		_, _ = fmt.Fprint(&buf, "\nHeader:")
+		fmt.Fprint(&buf, "\nHeader:")
 		for key, value := range e.Header {
-			_, _ = fmt.Fprintf(&buf, "\n - %v=%v", key, value)
+			fmt.Fprintf(&buf, "\n - %v=%v", key, value)
 		}
 	}
-	_, _ = fmt.Fprintf(&buf, "]")
+	fmt.Fprintf(&buf, "]")
 	return buf.String()
 }
 

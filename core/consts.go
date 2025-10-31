@@ -2,7 +2,6 @@ package core
 
 import "regexp"
 
-// 生产环境地址
 var DefaultEndpoint = "https://openplatform.gateapi.io"
 
 const (

@@ -48,33 +48,33 @@ go get https://github.com/gatepay2025/gatepay-sdk-go
    	"context"
    	"github.com/gatepay2025/gatepay-sdk-go/core"
    	"github.com/gatepay2025/gatepay-sdk-go/core/stringutillib"
-   	"github.com/gatepay2025/gatepay-sdk-go/services/address"
+   	"github.com/gatepay2025/gatepay-sdk-go/services/common"
+   	"github.com/shopspring/decimal"
    	"log"
    )
    
    func main() {
-   	cfg := core.NewConfig()
-   	//设置商户注册获取的秘钥
-   	credentials := core.NewCredentials("secret-key")
-   	client, err := core.NewClient(cfg, credentials)
-   	if err != nil {
-   		return
-   	}
+   		cfg := core.NewConfig()
+       //设置商户注册获取的秘钥
+   		credentials := core.NewCredentials("secret-key")
+   		client, err := core.NewClient(cfg, credentials)
+   		if err != nil {
+   			return
+   		}
    
-   	ctx := context.Background()
-   	service := &address.AddressApiService{Client: client}
-   	req := address.QueryAddressOrderRequest{MerchantTradeNo: "merchant-trade-no", PrepayID: "prepay-order-id"}
-   	req.AddHeader("X-GatePay-Certificate-ClientId", "client-id")
+       ctx := context.Background()
+       service := &AddressApiService{Client: client}
+       req := QueryAddressOrderRequest{MerchantTradeNo: "merchant-trade-no", PrepayID: "order-id"}
+       req.AddHeader("X-GatePay-Certificate-ClientId", "client-id")
    
-   	resp, result, err := service.QueryAddressOrder(ctx, req)
-   	if err != nil {
-   		log.Printf("call QueryAddressOrder err:%s", err.Error())
-   	} else {
-   		log.Printf("status=%d resp=%v", result.Response.StatusCode, stringutillib.ObjToJsonStr(resp))
-   	}
+       resp, result, err := service.QueryAddressOrder(ctx, req)
+       if err != nil {
+         log.Printf("call QueryAddressOrder err:%s", err.Error())
+       } else {
+         log.Printf("status=%d resp=%v", result.Response.StatusCode, stringutillib.ObjToJsonStr(resp))
+       }
    }
-   
    ```
-   
+
    
 

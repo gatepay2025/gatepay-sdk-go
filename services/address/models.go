@@ -158,7 +158,7 @@ type CreateAddressRefundConvertResponse struct {
 
 type TransactionDetailReq struct {
 	common.BaseRequest
-	PrepayID string `json:"prepayID"`
+	PrepayId string `json:"prepayId"`
 }
 
 type TransactionDetailResp struct {

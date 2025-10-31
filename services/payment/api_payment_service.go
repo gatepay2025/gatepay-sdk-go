@@ -1,147 +1,55 @@
-package address
+package payment
 
 import (
 	"context"
 	"github.com/gatepay2025/gatepay-sdk-go/core"
 	"github.com/gatepay2025/gatepay-sdk-go/services"
-	"github.com/gatepay2025/gatepay-sdk-go/services/common"
 	nethttp "net/http"
 	neturl "net/url"
+	"strconv"
 )
 
-type AddressApiService services.Service
+type PayApiService services.Service
 
-func (a *AddressApiService) GetAddressChains(ctx context.Context, req ChainsRequest) (resp *ChainsResponse, result *core.APIResult, err error) {
+// /v1/pay/order/query
+func (a *PayApiService) GetOrder(ctx context.Context, req OperateOrderRequest) (resp *QueryOrderResponse, result *core.APIResult, err error) {
 	var (
-		localVarHTTPMethod   = nethttp.MethodGet
+		localVarHTTPMethod   = nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarQueryParams  neturl.Values
 		localVarHeaderParams = nethttp.Header{}
 	)
 
-	localVarPath := core.DefaultEndpoint + "/v1/pay/address/chains"
-	localVarQueryParams = neturl.Values{}
-	localVarQueryParams.Add("currency", req.Currency)
+	localVarPath := core.DefaultEndpoint + "/v1/pay/order/query"
+	localVarPostBody = req
 
 	//set用户设置的Header
 	for k, v := range req.GetHeaders() {
 		localVarHeaderParams.Set(k, v)
 	}
 
-	localVarHTTPContentTypes := core.ApplicationJSON
-	result, err = a.Client.Request(ctx, localVarHTTPMethod, localVarPath, localVarHeaderParams, localVarQueryParams, localVarPostBody, localVarHTTPContentTypes)
-	if err != nil {
-		return nil, result, err
-	}
-
-	resp = &ChainsResponse{}
-	err = core.UnMarshalResponse(result.Response, resp)
-	if err != nil {
-		return nil, result, err
-	}
-
-	return resp, result, nil
-}
-
-// /v1/pay/address/query
-func (a *AddressApiService) QueryAddressOrder(ctx context.Context, req QueryAddressOrderRequest) (resp *QueryAddressOrderResp, result *core.APIResult, err error) {
-	var (
-		localVarHTTPMethod   = nethttp.MethodGet
-		localVarPostBody     interface{}
-		localVarQueryParams  neturl.Values
-		localVarHeaderParams = nethttp.Header{}
-	)
-
-	localVarPath := core.DefaultEndpoint + "/v1/pay/address/query"
 	localVarQueryParams = neturl.Values{}
-	localVarQueryParams.Add("merchantTradeNo", req.MerchantTradeNo)
 	localVarQueryParams.Add("prepayId", req.PrepayID)
-
-	//set用户设置的Header
-	for k, v := range req.GetHeaders() {
-		localVarHeaderParams.Set(k, v)
-	}
-
+	localVarQueryParams.Add("merchantTradeNo", req.MerchantTradeNo)
 	localVarHTTPContentTypes := core.ApplicationJSON
-	result, err = a.Client.Request(ctx, localVarHTTPMethod, localVarPath, localVarHeaderParams, localVarQueryParams, localVarPostBody, localVarHTTPContentTypes)
-	if err != nil {
-		return nil, result, err
-	}
-
-	resp = &QueryAddressOrderResp{}
-	err = core.UnMarshalResponse(result.Response, resp)
-	if err != nil {
-		return nil, result, err
-	}
-	return resp, result, nil
-
-}
-
-// /v1/pay/address/currencies
-func (a *AddressApiService) GetAddressCurrencies(ctx context.Context, req common.BaseRequest) (resp *SupportedCurrenciesRes, result *core.APIResult, err error) {
-	var (
-		localVarHTTPMethod   = nethttp.MethodGet
-		localVarPostBody     interface{}
-		localVarQueryParams  neturl.Values
-		localVarHeaderParams = nethttp.Header{}
-	)
-
-	localVarPath := core.DefaultEndpoint + "/v1/pay/address/currencies"
-	localVarQueryParams = neturl.Values{}
-	localVarHTTPContentTypes := core.ApplicationJSON
-
-	//set用户设置的Header
-	for k, v := range req.GetHeaders() {
-		localVarHeaderParams.Set(k, v)
-	}
 
 	result, err = a.Client.Request(ctx, localVarHTTPMethod, localVarPath, localVarHeaderParams, localVarQueryParams, localVarPostBody, localVarHTTPContentTypes)
 	if err != nil {
 		return nil, result, err
 	}
 
-	resp = &SupportedCurrenciesRes{}
+	resp = &QueryOrderResponse{}
 	err = core.UnMarshalResponse(result.Response, resp)
 	if err != nil {
 		return nil, result, err
 	}
+
 	return resp, result, nil
+
 }
 
-// /v1/pay/address/supportedconvertcurrencies
-func (a *AddressApiService) GetAddressSupportedConvertCurrencies(ctx context.Context, req SupportedConvertCurrenciesReq) (resp *SupportedConvertCurrenciesRes, result *core.APIResult, err error) {
-	var (
-		localVarHTTPMethod   = nethttp.MethodGet
-		localVarPostBody     interface{}
-		localVarQueryParams  neturl.Values
-		localVarHeaderParams = nethttp.Header{}
-	)
-
-	localVarPath := core.DefaultEndpoint + "/v1/pay/address/supportedconvertcurrencies"
-	localVarQueryParams = neturl.Values{}
-	localVarQueryParams.Add("currency", req.Currency)
-	localVarHTTPContentTypes := core.ApplicationJSON
-
-	//set用户设置的Header
-	for k, v := range req.GetHeaders() {
-		localVarHeaderParams.Set(k, v)
-	}
-
-	result, err = a.Client.Request(ctx, localVarHTTPMethod, localVarPath, localVarHeaderParams, localVarQueryParams, localVarPostBody, localVarHTTPContentTypes)
-	if err != nil {
-		return nil, result, err
-	}
-
-	resp = &SupportedConvertCurrenciesRes{}
-	err = core.UnMarshalResponse(result.Response, resp)
-	if err != nil {
-		return nil, result, err
-	}
-	return resp, result, nil
-}
-
-// /v1/pay/address/create
-func (a *AddressApiService) CreateAddress(ctx context.Context, req CreateOrderRequest) (resp *AddrOrderResponse, result *core.APIResult, err error) {
+// /v1/pay/order 创建非地址支付支付订单
+func (a *PayApiService) CreateOrder(ctx context.Context, req CreateOrderRequest) (resp *CreateOrderResponse, result *core.APIResult, err error) {
 	var (
 		localVarHTTPMethod   = nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -154,7 +62,7 @@ func (a *AddressApiService) CreateAddress(ctx context.Context, req CreateOrderRe
 		localVarHeaderParams.Set(k, v)
 	}
 
-	localVarPath := core.DefaultEndpoint + "/v1/pay/address/create"
+	localVarPath := core.DefaultEndpoint + "/v1/pay/order"
 	localVarPostBody = req
 	localVarHTTPContentTypes := core.ApplicationJSON
 
@@ -163,7 +71,7 @@ func (a *AddressApiService) CreateAddress(ctx context.Context, req CreateOrderRe
 		return nil, result, err
 	}
 
-	resp = &AddrOrderResponse{}
+	resp = &CreateOrderResponse{}
 	err = core.UnMarshalResponse(result.Response, resp)
 	if err != nil {
 		return nil, result, err
@@ -171,8 +79,8 @@ func (a *AddressApiService) CreateAddress(ctx context.Context, req CreateOrderRe
 	return resp, result, nil
 }
 
-// /v1/pay/address/refund
-func (a *AddressApiService) RefundAddress(ctx context.Context, req CreateAddressRefundRequest) (resp *CreateAddressRefundResponse, result *core.APIResult, err error) {
+// /v1/pay/order/close 主动关闭订单
+func (a *PayApiService) CloseOrder(ctx context.Context, req OperateOrderRequest) (resp *OperateOrderResponse, result *core.APIResult, err error) {
 	var (
 		localVarHTTPMethod   = nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -185,7 +93,7 @@ func (a *AddressApiService) RefundAddress(ctx context.Context, req CreateAddress
 		localVarHeaderParams.Set(k, v)
 	}
 
-	localVarPath := core.DefaultEndpoint + "/v1/pay/address/refund"
+	localVarPath := core.DefaultEndpoint + "/v1/pay/order/close"
 	localVarPostBody = req
 	localVarHTTPContentTypes := core.ApplicationJSON
 
@@ -194,7 +102,7 @@ func (a *AddressApiService) RefundAddress(ctx context.Context, req CreateAddress
 		return nil, result, err
 	}
 
-	resp = &CreateAddressRefundResponse{}
+	resp = &OperateOrderResponse{}
 	err = core.UnMarshalResponse(result.Response, resp)
 	if err != nil {
 		return nil, result, err
@@ -202,8 +110,8 @@ func (a *AddressApiService) RefundAddress(ctx context.Context, req CreateAddress
 	return resp, result, nil
 }
 
-// /v1/pay/address/refundconvert
-func (a *AddressApiService) RefundAddressConvert(ctx context.Context, req CreateAddressRefundConvertRequest) (resp *CreateAddressRefundConvertResponse, result *core.APIResult, err error) {
+// /v1/pay/order/refund 创建退款单
+func (a *PayApiService) CreateRefundOder(ctx context.Context, req CreateRefundRequest) (resp *CreateRefundResponse, result *core.APIResult, err error) {
 	var (
 		localVarHTTPMethod   = nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -216,15 +124,16 @@ func (a *AddressApiService) RefundAddressConvert(ctx context.Context, req Create
 		localVarHeaderParams.Set(k, v)
 	}
 
-	localVarPath := core.DefaultEndpoint + "/v1/pay/address/refundconvert"
+	localVarPath := core.DefaultEndpoint + "/v1/pay/order/refund"
 	localVarPostBody = req
 	localVarHTTPContentTypes := core.ApplicationJSON
+
 	result, err = a.Client.Request(ctx, localVarHTTPMethod, localVarPath, localVarHeaderParams, localVarQueryParams, localVarPostBody, localVarHTTPContentTypes)
 	if err != nil {
 		return nil, result, err
 	}
 
-	resp = &CreateAddressRefundConvertResponse{}
+	resp = &CreateRefundResponse{}
 	err = core.UnMarshalResponse(result.Response, resp)
 	if err != nil {
 		return nil, result, err
@@ -232,8 +141,132 @@ func (a *AddressApiService) RefundAddressConvert(ctx context.Context, req Create
 	return resp, result, nil
 }
 
-// /v1/pay/address/transactiondetail
-func (a *AddressApiService) QueryAddressTransactionDetail(ctx context.Context, req TransactionDetailReq) (resp *TransactionDetailResp, result *core.APIResult, err error) {
+// /v1/pay/order/refund/query
+func (a *PayApiService) QueryRefund(ctx context.Context, req QueryRefundRequest) (resp *QueryRefundResponse, result *core.APIResult, err error) {
+	var (
+		localVarHTTPMethod   = nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarQueryParams  neturl.Values
+		localVarHeaderParams = nethttp.Header{}
+	)
+
+	//set用户设置的Header
+	for k, v := range req.GetHeaders() {
+		localVarHeaderParams.Set(k, v)
+	}
+
+	localVarPath := core.DefaultEndpoint + "/v1/pay/order/refund/query"
+	localVarPostBody = req
+	localVarHTTPContentTypes := core.ApplicationJSON
+
+	result, err = a.Client.Request(ctx, localVarHTTPMethod, localVarPath, localVarHeaderParams, localVarQueryParams, localVarPostBody, localVarHTTPContentTypes)
+	if err != nil {
+		return nil, result, err
+	}
+
+	resp = &QueryRefundResponse{}
+	err = core.UnMarshalResponse(result.Response, resp)
+	if err != nil {
+		return nil, result, err
+	}
+	return resp, result, nil
+}
+
+// /v1/pay/batch/transfer 批量转账
+func (a *PayApiService) CreateTransfer(ctx context.Context, req BatchTransfer) (resp *BatchTransferResponse, result *core.APIResult, err error) {
+	var (
+		localVarHTTPMethod   = nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarQueryParams  neturl.Values
+		localVarHeaderParams = nethttp.Header{}
+	)
+
+	//set用户设置的Header
+	for k, v := range req.GetHeaders() {
+		localVarHeaderParams.Set(k, v)
+	}
+
+	localVarPath := core.DefaultEndpoint + "/v1/pay/batch/transfer"
+	localVarPostBody = req
+	localVarHTTPContentTypes := core.ApplicationJSON
+
+	result, err = a.Client.Request(ctx, localVarHTTPMethod, localVarPath, localVarHeaderParams, localVarQueryParams, localVarPostBody, localVarHTTPContentTypes)
+	if err != nil {
+		return nil, result, err
+	}
+
+	resp = &BatchTransferResponse{}
+	err = core.UnMarshalResponse(result.Response, resp)
+	if err != nil {
+		return nil, result, err
+	}
+	return resp, result, nil
+}
+
+// /v1/pay/batch/transfer/query
+func (a *PayApiService) BatchTransferQuery(ctx context.Context, req BatchTransferQueryReq) (resp *BatchTransferQueryResponse, result *core.APIResult, err error) {
+	var (
+		localVarHTTPMethod   = nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarQueryParams  neturl.Values
+		localVarHeaderParams = nethttp.Header{}
+	)
+
+	//set用户设置的Header
+	for k, v := range req.GetHeaders() {
+		localVarHeaderParams.Set(k, v)
+	}
+
+	localVarPath := core.DefaultEndpoint + "/v1/pay/batch/transfer/query"
+	localVarPostBody = req
+	localVarHTTPContentTypes := core.ApplicationJSON
+
+	result, err = a.Client.Request(ctx, localVarHTTPMethod, localVarPath, localVarHeaderParams, localVarQueryParams, localVarPostBody, localVarHTTPContentTypes)
+	if err != nil {
+		return nil, result, err
+	}
+
+	resp = &BatchTransferQueryResponse{}
+	err = core.UnMarshalResponse(result.Response, resp)
+	if err != nil {
+		return nil, result, err
+	}
+	return resp, result, nil
+}
+
+// /v1/pay/transactions/native
+func (a *PayApiService) CreateNativeOrder(ctx context.Context, req CreateOrderRequest) (resp *QrOrderResponse, result *core.APIResult, err error) {
+	var (
+		localVarHTTPMethod   = nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarQueryParams  neturl.Values
+		localVarHeaderParams = nethttp.Header{}
+	)
+
+	for k, v := range req.GetHeaders() {
+		localVarHeaderParams.Set(k, v)
+	}
+
+	localVarPath := core.DefaultEndpoint + "/v1/pay/transactions/native"
+	localVarPostBody = req
+
+	localVarHTTPContentTypes := core.ApplicationJSON
+
+	result, err = a.Client.Request(ctx, localVarHTTPMethod, localVarPath, localVarHeaderParams, localVarQueryParams, localVarPostBody, localVarHTTPContentTypes)
+	if err != nil {
+		return nil, result, err
+	}
+
+	resp = &QrOrderResponse{}
+	err = core.UnMarshalResponse(result.Response, resp)
+	if err != nil {
+		return nil, result, err
+	}
+	return resp, result, nil
+}
+
+// v1/pay/bill/orderlist
+func (a *PayApiService) GetOrderList(ctx context.Context, req BalanceHistoryListReq) (resp *BalanceHistoryListResp, result *core.APIResult, err error) {
 	var (
 		localVarHTTPMethod   = nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -241,9 +274,44 @@ func (a *AddressApiService) QueryAddressTransactionDetail(ctx context.Context, r
 		localVarHeaderParams = nethttp.Header{}
 	)
 
-	localVarPath := core.DefaultEndpoint + "/v1/pay/address/transactiondetail"
+	localVarPath := core.DefaultEndpoint + "/v1/pay/bill/orderlist"
 	localVarQueryParams = neturl.Values{}
-	localVarQueryParams.Add("prepayId", req.PrepayId)
+
+	tt := req.TransactionType
+	localVarQueryParams.Add("transactionType", strconv.Itoa(tt))
+	timeType := req.TimeType
+	localVarQueryParams.Add("timeType", strconv.FormatInt(timeType, 10))
+	st := strconv.FormatInt(req.StartTime, 10)
+	localVarQueryParams.Add("startTime", st)
+	et := strconv.FormatInt(req.EndTime, 10)
+	localVarQueryParams.Add("endTime", et)
+	ct := strconv.Itoa(req.Count)
+	localVarQueryParams.Add("count", ct)
+	pg := strconv.Itoa(req.Page)
+	localVarQueryParams.Add("page", pg)
+	status := req.Status
+	if status != "" {
+		localVarQueryParams.Add("status", status)
+	}
+	cur := req.Currency
+	if cur != "" {
+		localVarQueryParams.Add("currency", cur)
+	}
+	ot := req.OrderType
+	localVarQueryParams.Add("orderType", strconv.Itoa(ot))
+	orderIdNo := req.OrderIdNo
+	if orderIdNo != "" {
+		localVarQueryParams.Add("orderIdNo", orderIdNo)
+	}
+	financialType := req.FinancialType
+	if financialType != "" {
+		localVarQueryParams.Add("financialType", financialType)
+	}
+	sortType := req.SortType
+	if sortType != "" {
+		localVarQueryParams.Add("sortType", sortType)
+	}
+
 	localVarHTTPContentTypes := core.ApplicationJSON
 
 	//set用户设置的Header
@@ -256,7 +324,7 @@ func (a *AddressApiService) QueryAddressTransactionDetail(ctx context.Context, r
 		return nil, result, err
 	}
 
-	resp = &TransactionDetailResp{}
+	resp = &BalanceHistoryListResp{}
 	err = core.UnMarshalResponse(result.Response, resp)
 	if err != nil {
 		return nil, result, err

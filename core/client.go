@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gatepay2025/gatepay-sdk-go/core/signature"
+	"github.com/gatepay2025/gatepay-sdk-go/core/stringutillib"
 	"io"
 	"net/http"
 	"net/url"
@@ -158,11 +159,6 @@ func (cli *Client) doRequest(
 		return nil, err
 	}
 
-	//for key, values := range header {
-	//	for _, v := range values {
-	//		request.Header.Add(key, v)
-	//	}
-	//}
 	request.Header = header.Clone()
 	request.Header.Set(Accept, "*/*")
 	request.Header.Set(ContentType, contentType)
@@ -220,7 +216,7 @@ func (cli *Client) doHTTP(req *http.Request) (result *APIResult, err error) {
 
 func UnMarshalResponse(httpResp *http.Response, resp interface{}) error {
 	body, err := io.ReadAll(httpResp.Body)
-	_ = httpResp.Body.Close()
+	fmt.Printf("UnMarshalResponse %s", stringutillib.ObjToJsonStr(resp))
 
 	if err != nil {
 		return err
@@ -251,6 +247,20 @@ func UnMarshalResponse(httpResp *http.Response, resp interface{}) error {
 		return apiError
 	}
 	err = json.Unmarshal(httpResponse.Data, resp)
+	if err != nil {
+		fmt.Printf("UnMarshalResponse %s \n err %s \n", body, err.Error())
+		return err
+	}
+	return nil
+}
+
+func UnMarshalResponseWithdraw(httpResp *http.Response, resp interface{}) error {
+	body, err := io.ReadAll(httpResp.Body)
+	//fmt.Printf("UnMarshalResponse %s", stringutillib.ObjToJsonStr(resp))
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(body, &resp)
 	if err != nil {
 		return err
 	}
