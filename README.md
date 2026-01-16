@@ -1,3 +1,6 @@
+# 最新地址已迁移到：
+https://github.com/gate/gateapi-go
+
 # GatePay API GO SDK
 
 GatePay API官方GO语言客户端代码库。
